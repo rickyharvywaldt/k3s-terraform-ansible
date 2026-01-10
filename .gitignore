@@ -9,6 +9,7 @@ terraform/inventory/
 # Ansible
 ansible/.ansible/
 ansible/*.retry
+ansible/inventory/cluster/group_vars/all.yml
 
 # SSH keys
 *.pem
