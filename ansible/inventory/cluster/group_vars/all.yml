@@ -1,7 +1,0 @@
----
-ansible_port: 22
-ansible_user: ubuntu
-k3s_version: v1.31.12+k3s1
-token: "goWC0Xm8xwQUbLGCWQcRRgF0niEmiH2NjPMyYnIOhk3R5tyhOkowJNavAI/CDeB5ua+BNQ5SxswG5ZIjW0XEYg=="
-api_endpoint: "{{ hostvars[groups['server'][0]]['ansible_host'] }}"
-systemd_dir: /etc/systemd/system
