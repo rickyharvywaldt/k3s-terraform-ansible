@@ -46,7 +46,7 @@ sleep 30
 # Step 5: Deploy k3s with Ansible
 echo -e "${BLUE}[5/6] Deploying k3s cluster with Ansible...${NC}"
 cd "$ANSIBLE_DIR"
-ansible-playbook playbooks/site.yml -i inventory/cluster/hosts.ini
+ansible-playbook playbooks/site-minimal.yml -i inventory/cluster/hosts.ini
 
 # Step 6: Fetch and configure kubeconfig
 echo -e "${BLUE}[6/6] Fetching kubeconfig...${NC}"
