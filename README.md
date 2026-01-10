@@ -1,9 +1,7 @@
 # K3s Homelab Cluster
-
 Automated k3s cluster deployment on Proxmox using Terraform and Ansible.
 
 ## Prerequisites
-
 - Proxmox server
 - Ubuntu cloud-init template (VM ID 100)
 - Terraform installed
@@ -12,10 +10,34 @@ Automated k3s cluster deployment on Proxmox using Terraform and Ansible.
 
 ## Configuration
 
-1. Copy `terraform/terraform.tfvars.template` to `terraform/terraform.tfvars`
-2. Update with your Proxmox details and SSH keys
-3. Customize cluster size in `terraform/variables.tf` if needed and ssh private key path
-4. Update k3s version in `ansible/inventory/my-cluster/group_vars/all.yml`
+### 1. Terraform Configuration
+Copy the template and update with your Proxmox details:
+```bash
+cp terraform/terraform.tfvars.template terraform/terraform.tfvars
+```
+
+Edit `terraform/terraform.tfvars` with:
+- Proxmox endpoint and API token
+- SSH public key
+- SSH private key path
+- VM IP addresses and gateway
+- Cluster size (optional - defaults in `variables.tf`)
+
+### 2. Ansible Configuration
+Copy the template configuration:
+```bash
+cp ansible/inventory/cluster/group_vars/all.yml.template \
+   ansible/inventory/cluster/group_vars/all.yml
+```
+
+Generate a secure k3s token:
+```bash
+openssl rand -base64 64
+```
+
+Edit `ansible/inventory/cluster/group_vars/all.yml` and:
+- Replace `GENERATE_WITH_openssl_rand_-base64_64` with your generated token
+- Update k3s version if needed (default: v1.31.12+k3s1)
 
 ## Deployment
 
@@ -40,7 +62,7 @@ terraform apply
 Deploy k3s only:
 ```bash
 cd ansible
-ansible-playbook playbooks/site.yml -i inventory/my-cluster/hosts.ini
+ansible-playbook playbooks/site-minimal.yml -i inventory/cluster/hosts.ini
 ```
 
 ## Access the Cluster
@@ -48,3 +70,14 @@ ansible-playbook playbooks/site.yml -i inventory/my-cluster/hosts.ini
 export KUBECONFIG=~/.kube/k3s-config
 kubectl get nodes
 ```
+
+Or use the kubeconfig directly:
+```bash
+kubectl --kubeconfig ~/.kube/k3s-config get nodes
+```
+
+## Security Notes
+
+- `terraform/terraform.tfvars` and `ansible/inventory/cluster/group_vars/all.yml` contain secrets and are excluded from git
+- Use the `.template` files as references
+- Never commit your actual tokens or API keys to version control
