@@ -1,0 +1,12 @@
+---
+ansible_port: 22
+ansible_user: ubuntu
+k3s_version: v1.31.12+k3s1
+token: "{{ lookup('env', 'K3S_TOKEN') | default('eSXrZqF9rfqAa8Z0WgfruI9D3FRadbupmxmikONj4EyjcVmx77UGMGhYz4cJ7uldTpM52BCAR83m2LBLMR3FBQ==', true) }}"
+api_endpoint: "{{ hostvars[groups['server'][0]]['ansible_host'] }}"
+systemd_dir: /etc/systemd/system
+
+# Optional vars
+# extra_server_args: ""
+# extra_agent_args: ""
+# cluster_context: k3s-ansible

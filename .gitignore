@@ -1,0 +1,19 @@
+# Terraform
+terraform/.terraform/
+terraform/.terraform.lock.hcl
+terraform/terraform.tfstate
+terraform/terraform.tfstate.backup
+terraform/terraform.tfvars
+terraform/inventory/
+
+# Ansible
+ansible/.ansible/
+ansible/*.retry
+
+# SSH keys
+*.pem
+*.key
+id_rsa*
+
+# macOS
+.DS_Store
