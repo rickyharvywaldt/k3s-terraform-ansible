@@ -12,7 +12,7 @@ Automated k3s cluster deployment on Proxmox using Terraform and Ansible.
 
 ## Configuration
 
-1. Copy `terraform/terraform.tfvars.example` to `terraform/terraform.tfvars`
+1. Copy `terraform/terraform.tfvars.template` to `terraform/terraform.tfvars`
 2. Update with your Proxmox details and SSH keys
 3. Customize cluster size in `terraform/variables.tf` if needed and ssh private key path
 4. Update k3s version in `ansible/inventory/my-cluster/group_vars/all.yml`
