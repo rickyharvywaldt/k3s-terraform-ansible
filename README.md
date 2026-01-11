@@ -97,3 +97,8 @@ ssh -i <PATH_TO_SSH_PRIVATE_KEY> ubuntu@<BASTION_IP>
 - `terraform/terraform.tfvars` and `ansible/inventory/cluster/group_vars/all.yml` contain secrets and are excluded from git
 - Use the `.template` files as references
 - Never commit your actual tokens or API keys to version control
+
+## Repos used
+
+- https://github.com/k3s-io/k3s-ansible
+- https://github.com/bpg/terraform-provider-proxmox
