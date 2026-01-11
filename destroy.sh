@@ -5,7 +5,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 KUBECONFIG_PATH="$HOME/.kube/k3s-config"
 
 # Define IPs (should match your terraform.tfvars)
-CLUSTER_IPS=("10.100.2.50" "10.100.2.51" "10.100.2.52")
+CLUSTER_IPS=("10.100.2.49" "10.100.2.50" "10.100.2.51" "10.100.2.52")
 
 echo "=========================================="
 echo "Destroying K3s Cluster"

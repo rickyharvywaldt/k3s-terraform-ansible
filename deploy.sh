@@ -1,13 +1,10 @@
 #!/bin/bash
 set -e  # Exit on any error
 
-echo "=========================================="
-echo "K3s Cluster Deployment Script"
-echo "=========================================="
-
 # Colors for output
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
 # Configuration
@@ -17,9 +14,25 @@ ANSIBLE_DIR="$SCRIPT_DIR/ansible"
 MASTER_IP="10.100.2.50"
 KUBECONFIG_PATH="$HOME/.kube/k3s-config"
 
+# Parse arguments
+ENABLE_BASTION=false
+if [[ "$1" == "bastion" ]]; then
+    ENABLE_BASTION=true
+    echo -e "${YELLOW}Bastion mode enabled${NC}"
+fi
+
+echo "=========================================="
+echo "K3s Cluster Deployment Script"
+echo "=========================================="
+
 # Step 1: Clean SSH known hosts
 echo -e "${BLUE}[1/6] Cleaning SSH known_hosts...${NC}"
-for ip in 10.100.2.50 10.100.2.51 10.100.2.52; do 
+SSH_IPS="10.100.2.50 10.100.2.51 10.100.2.52"
+if [ "$ENABLE_BASTION" = true ]; then
+    SSH_IPS="$SSH_IPS 10.100.2.49"
+fi
+
+for ip in $SSH_IPS; do 
     ssh-keygen -R $ip 2>/dev/null || true
 done
 
@@ -28,7 +41,7 @@ echo -e "${BLUE}[2/6] Setting up SSH agent...${NC}"
 if [ -z "$SSH_AUTH_SOCK" ]; then
     eval $(ssh-agent -s)
 fi
-if ! ssh-add -l | grep -q "id_rsa"; then
+if ! ssh-add -l | grep -q "k3s-terraform-ansible"; then
     echo "Adding SSH key to agent..."
     ssh-add ~/.ssh/k3s-terraform-ansible
 fi
@@ -37,7 +50,12 @@ fi
 echo -e "${BLUE}[3/6] Provisioning VMs with Terraform...${NC}"
 cd "$TERRAFORM_DIR"
 terraform init
-terraform apply -auto-approve
+
+if [ "$ENABLE_BASTION" = true ]; then
+    terraform apply -auto-approve -var="enable_bastion=true"
+else
+    terraform apply -auto-approve
+fi
 
 # Step 4: Wait for VMs to fully boot
 echo -e "${BLUE}[4/6] Waiting for VMs to boot (30 seconds)...${NC}"
@@ -61,6 +79,10 @@ echo -e "${GREEN}=========================================="
 echo "Deployment Complete!"
 echo "==========================================${NC}"
 echo ""
+if [ "$ENABLE_BASTION" = true ]; then
+    echo -e "${GREEN}Bastion host: ubuntu@10.100.2.49${NC}"
+    echo ""
+fi
 echo "Kubeconfig saved to: $KUBECONFIG_PATH"
 echo ""
 echo "Cluster status:"
