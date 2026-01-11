@@ -17,3 +17,11 @@
   become: true
   roles:
     - role: k3s_agent
+
+- name: Setup bastion host
+  hosts: bastion
+  gather_facts: true
+  become: true
+  roles:
+    - role: k3s_bastion
+  ignore_unreachable: true

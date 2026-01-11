@@ -1,0 +1,31 @@
+---
+- name: Install kubectl
+  ansible.builtin.shell: |
+    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+    sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+    rm kubectl
+  args:
+    creates: /usr/local/bin/kubectl
+
+- name: Install k9s
+  ansible.builtin.shell: |
+    wget -q https://github.com/derailed/k9s/releases/latest/download/k9s_Linux_amd64.tar.gz
+    tar -xzf k9s_Linux_amd64.tar.gz
+    sudo install -o root -g root -m 0755 k9s /usr/local/bin/k9s
+    rm k9s k9s_Linux_amd64.tar.gz
+  args:
+    creates: /usr/local/bin/k9s
+
+- name: Create .kube directory
+  ansible.builtin.file:
+    path: "{{ ansible_env.HOME }}/.kube"
+    state: directory
+    mode: '0755'
+
+- name: Install additional tools
+  ansible.builtin.package:
+    name:
+      - curl
+      - vim
+      - git
+    state: present

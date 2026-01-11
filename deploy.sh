@@ -13,6 +13,7 @@ TERRAFORM_DIR="$SCRIPT_DIR/terraform"
 ANSIBLE_DIR="$SCRIPT_DIR/ansible"
 MASTER_IP="10.100.2.50"
 KUBECONFIG_PATH="$HOME/.kube/k3s-config"
+SSH_PRIVATE_KEY_PATH="$HOME/.ssh/k3s-terraform-ansible"
 
 # Parse arguments
 ENABLE_BASTION=false
@@ -72,6 +73,13 @@ ssh ubuntu@$MASTER_IP "sudo cat /etc/rancher/k3s/k3s.yaml" > "$KUBECONFIG_PATH"
 sed -i '' "s/127.0.0.1/$MASTER_IP/g" "$KUBECONFIG_PATH"
 chmod 600 "$KUBECONFIG_PATH"
 
+# Copy kubeconfig to bastion if enabled
+if [ "$ENABLE_BASTION" = true ]; then
+    echo -e "${BLUE}Copying kubeconfig to bastion...${NC}"
+    ssh -i ~/.ssh/k3s-terraform-ansible ubuntu@10.100.2.49 "mkdir -p ~/.kube"
+    scp -i ~/.ssh/k3s-terraform-ansible "$KUBECONFIG_PATH" ubuntu@10.100.2.49:~/.kube/config
+fi
+
 cd "$SCRIPT_DIR"
 
 # Verify cluster
@@ -88,6 +96,9 @@ echo ""
 echo "Cluster status:"
 kubectl --kubeconfig "$KUBECONFIG_PATH" get nodes
 echo ""
-echo -e "${GREEN}To use the cluster, run:${NC}"
+echo -e "${GREEN}To use the cluster from your local machine, run:${NC}"
 echo "export KUBECONFIG=$KUBECONFIG_PATH"
 echo "kubectl get nodes"
+echo ""
+echo -e "${GREEN}If bastion is provisioned, to log in, run:${NC}"
+echo "ssh -i $SSH_PRIVATE_KEY_PATH ubuntu@10.100.2.49"
