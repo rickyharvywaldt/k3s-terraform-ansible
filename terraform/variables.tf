@@ -21,6 +21,31 @@ variable "template_vm_id" {
   default     = 100
 }
 
+variable "enable_bastion" {
+  type    = bool
+  default = false
+}
+
+variable "bastion_cores" {
+  type    = number
+  default = 1
+}
+
+variable "bastion_memory" {
+  type    = number
+  default = 2048
+}
+
+variable "bastion_disk_size" {
+  type    = number
+  default = 20
+}
+
+variable "bastion_ip" {
+  type    = string
+  default = "10.100.2.49/24"
+}
+
 variable "master_count" {
   description = "Number of k3s master nodes"
   type        = number

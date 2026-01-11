@@ -11,3 +11,8 @@ ${worker.name} ansible_host=${worker.ip} ansible_user=${ssh_user} ansible_ssh_pr
 [k3s_cluster:children]
 server
 agent
+
+%{ if enable_bastion ~}
+[bastion]
+${bastion.name} ansible_host=${bastion.ip} ansible_user=${ssh_user} ansible_ssh_private_key_file=${ssh_private_key}
+%{ endif ~}
