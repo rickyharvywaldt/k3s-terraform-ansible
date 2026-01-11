@@ -1,5 +1,5 @@
 # K3s Homelab Cluster
-Automated k3s cluster deployment on Proxmox using Terraform and Ansible.
+Automated k3s cluster deployment on Proxmox using Terraform and Ansible. The script will provision 1 control plane and 2 worker nodes. There is also an option to provision a bastion host with some default tools installed like kubectl, k9s, vim etc.
 
 ## Prerequisites
 - Proxmox server
@@ -46,6 +46,11 @@ Deploy the entire cluster:
 ./deploy.sh
 ```
 
+Deploy the entire cluster with bastion:
+```bash
+./deploy.sh bastion
+```
+
 Destroy the cluster:
 ```bash
 ./destroy.sh
@@ -57,6 +62,12 @@ Provision VMs only:
 ```bash
 cd terraform
 terraform apply
+```
+
+Provision VMs only with bastion:
+```bash
+cd terraform
+terraform apply -var="enable_bastion=true"
 ```
 
 Deploy k3s only:
@@ -74,6 +85,11 @@ kubectl get nodes
 Or use the kubeconfig directly:
 ```bash
 kubectl --kubeconfig ~/.kube/k3s-config get nodes
+```
+
+## Access the bastion host
+```bash
+ssh -i <PATH_TO_SSH_PRIVATE_KEY> ubuntu@<BASTION_IP>
 ```
 
 ## Security Notes
