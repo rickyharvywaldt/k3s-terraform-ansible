@@ -1,7 +1,7 @@
-proxmox_endpoint     = "https://your-proxmox-ip:8006"
-proxmox_api_token    = "your-token-id=your-token-secret"
-ssh_public_key       = "ssh-rsa AAAA..."
+proxmox_endpoint     = "https://192.168.1.150:8006"
+proxmox_api_token    = "root@pam!terraform=2d0f5b11-7cb0-4b84-9f85-5bd3242df58e"
+ssh_public_key       = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAICQKQAmAWtTMnnUvn/Cad7MnwFl2yJnq+73sYJYE/tIW rajesh@homelab"
 ssh_private_key_path = "~/.ssh/id_rsa"
-master_ips           = ["10.100.2.50/24"]
-worker_ips           = ["10.100.2.51/24", "10.100.2.52/24"]
-gateway              = "10.100.2.1"
+master_ips           = ["192.168.1.200/24"]
+worker_ips           = ["192.168.1.201/24", "192.168.1.202/24"]
+gateway              = "192.168.1.1"

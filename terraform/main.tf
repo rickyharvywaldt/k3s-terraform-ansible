@@ -35,6 +35,12 @@ resource "proxmox_virtual_environment_vm" "k3s_bastion" {
   memory {
     dedicated = var.bastion_memory
   }
+
+  disk {
+  datastore_id = "VM-space"
+  interface    = "scsi0"
+  size         =  20 
+  }
   
   network_device {
     bridge = "vmbr0"
@@ -45,6 +51,7 @@ resource "proxmox_virtual_environment_vm" "k3s_bastion" {
   }
   
   initialization {
+    datastore_id = "VM-space"
     ip_config {
       ipv4 {
         address = var.bastion_ip
@@ -78,6 +85,12 @@ resource "proxmox_virtual_environment_vm" "k3s_master" {
     dedicated = var.master_memory
   }
 
+  disk {
+  datastore_id = "VM-space"
+  interface    = "scsi0"
+  size         =  20 
+ }
+
   network_device {
     bridge = "vmbr0"
   }
@@ -87,6 +100,7 @@ resource "proxmox_virtual_environment_vm" "k3s_master" {
   }
 
   initialization {
+    datastore_id = "VM-space"
     ip_config {
       ipv4 {
         address = var.master_ips[count.index]
@@ -120,6 +134,12 @@ resource "proxmox_virtual_environment_vm" "k3s_worker" {
     dedicated = var.worker_memory
   }
 
+  disk {
+  datastore_id = "VM-space"
+  interface    = "scsi0"
+  size         =  20 
+  }
+
   network_device {
     bridge = "vmbr0"
   }
@@ -129,6 +149,7 @@ resource "proxmox_virtual_environment_vm" "k3s_worker" {
   }
 
   initialization {
+    datastore_id = "VM-space"
     ip_config {
       ipv4 {
         address = var.worker_ips[count.index]
