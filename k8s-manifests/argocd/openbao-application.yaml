@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: openbao
+  namespace: argocd
+spec:
+  project: default
+
+  sources:
+    # Source 1: Helm chart from OpenBao repository
+    - repoURL: https://openbao.github.io/openbao-helm
+      chart: openbao
+      targetRevision: 0.4.0
+      helm:
+        valueFiles:
+          - $values/k8s-manifests/openbao/values.yaml
+
+    # Source 2: Your Git repo with custom values
+    - repoURL: https://github.com/rgunasekaran-github/k3s-terraform-ansible.git
+      targetRevision: main
+      ref: values
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: openbao
+
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

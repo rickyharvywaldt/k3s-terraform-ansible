@@ -1,0 +1,49 @@
+# OpenBao Helm Chart Values
+# For homelab K3s deployment with persistent storage
+
+server:
+  # Enable standalone mode (single instance for homelab)
+  standalone:
+    enabled: true
+
+    # Persistent storage configuration
+    config: |
+      ui = true
+
+      listener "tcp" {
+        tls_disable = 1
+        address = "[::]:8200"
+        cluster_address = "[::]:8201"
+      }
+
+      storage "file" {
+        path = "/openbao/data"
+      }
+
+  # Enable data persistence
+  dataStorage:
+    enabled: true
+    size: 10Gi
+    storageClass: local-path
+    accessMode: ReadWriteOnce
+
+  # Resource limits (adjust for homelab)
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 250m
+    limits:
+      memory: 512Mi
+      cpu: 500m
+
+  # Service configuration - NodePort for Safari access
+  service:
+    enabled: true
+    type: NodePort
+    port: 8200
+    targetPort: 8200
+
+# Enable UI
+ui:
+  enabled: true
+  serviceType: NodePort
