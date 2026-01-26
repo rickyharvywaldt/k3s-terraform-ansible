@@ -1,5 +1,5 @@
 proxmox_endpoint     = "https://YOUR_PROXMOX_IP:8006"
-proxmox_api_token    = "root@pam!terraform=YOUR_API_TOKEN_HERE"
+proxmox_api_token    = "YOUR_PROXMOX_API_TOKEN_HERE"
 ssh_public_key       = "YOUR_SSH_PUBLIC_KEY_HERE"
 ssh_private_key_path = "~/.ssh/id_ed25519"
 master_ips           = ["192.168.1.200/24"]
