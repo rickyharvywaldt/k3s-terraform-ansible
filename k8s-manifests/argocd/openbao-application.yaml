@@ -17,7 +17,7 @@ spec:
 
     # Source 2: Your Git repo with custom values
     - repoURL: https://github.com/rgunasekaran-github/k3s-terraform-ansible.git
-      targetRevision: main
+      targetRevision: ft/deploy-openbao
       ref: values
 
   destination:
