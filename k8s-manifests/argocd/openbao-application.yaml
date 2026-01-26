@@ -19,6 +19,14 @@ spec:
     - repoURL: https://github.com/rgunasekaran-github/k3s-terraform-ansible.git
       targetRevision: ft/deploy-openbao
       ref: values
+  
+  spec:
+  ignoreDifferences:
+    - group: ""
+      kind: ConfigMap
+      name: openbao-agent-injector-cfg
+      jsonPointers:
+        - /data
 
   destination:
     server: https://kubernetes.default.svc
