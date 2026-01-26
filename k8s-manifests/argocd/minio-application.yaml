@@ -7,7 +7,7 @@ spec:
   project: default
   source:
     repoURL: https://github.com/rgunasekaran-github/k3s-terraform-ansible.git
-    targetRevision: ft/deploy-argocd-minio
+    targetRevision: main
     path: k8s-manifests/minio
   destination:
     server: https://kubernetes.default.svc
