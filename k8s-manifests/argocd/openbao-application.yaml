@@ -6,6 +6,13 @@ metadata:
 spec:
   project: default
 
+  ignoreDifferences:
+    - group: ""
+      kind: ConfigMap
+      name: openbao-agent-injector-cfg
+      jsonPointers:
+        - /data
+
   sources:
     # Source 1: Helm chart from OpenBao repository
     - repoURL: https://openbao.github.io/openbao-helm
@@ -19,14 +26,6 @@ spec:
     - repoURL: https://github.com/rgunasekaran-github/k3s-terraform-ansible.git
       targetRevision: ft/deploy-openbao
       ref: values
-  
-  spec:
-  ignoreDifferences:
-    - group: ""
-      kind: ConfigMap
-      name: openbao-agent-injector-cfg
-      jsonPointers:
-        - /data
 
   destination:
     server: https://kubernetes.default.svc
